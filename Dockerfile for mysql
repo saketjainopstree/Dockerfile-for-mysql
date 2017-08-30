@@ -1,0 +1,11 @@
+FROM ubuntu:14.04
+RUN apt-get update
+RUN apt-get install -y wget mysql-server
+RUN sed -i -e 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
+RUN service mysql start ; \
+        mysql  -e "CREATE DATABASE employeedb; \
+        GRANT ALL PRIVILEGES ON employeedb.* TO 'employee'@'%' IDENTIFIED BY 'employee'; \
+        GRANT ALL PRIVILEGES ON employeedb.* TO 'employee'@'localhost' IDENTIFIED BY 'employee'; \
+        FLUSH PRIVILEGES ;"
+EXPOSE 3306
+CMD ["/usr/sbin/mysqld"
